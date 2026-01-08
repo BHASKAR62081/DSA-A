@@ -87,7 +87,40 @@ public class BTree {
                 }
             }
         }
+
+        public int height (Node root){
+            if(root == null){
+                return 0;
+            }
+            int lh = height(root.left);
+            int rh = height(root.right);
+            int height = Math.max(lh,rh) + 1;
+            return height;
+        }
+
+        public int countNode(Node root){
+            if(root == null){
+                return 0;
+            }
+
+            int lc = countNode(root.left);
+            int rc = countNode(root.right);
+            int count = lc + rc + 1;
+            return count;
+        }
+
+        public int sum(Node root){
+            if(root == null){
+                return 0;
+            }
+
+            int ls = sum(root.left);
+            int rs = sum(root.right);
+            return ls + rs+ root.data;
+        }
     }
+
+     
 
     public static void main(String args[]){
         int nodes[] = {1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1};
@@ -101,5 +134,8 @@ public class BTree {
         tree.postOrder(root);
         System.out.println();
         tree.levelOrder(root);
+        System.out.println(tree.height(root));
+        System.out.println(tree.countNode(root));
+        System.out.println(tree.sum(root));
     }
 }
