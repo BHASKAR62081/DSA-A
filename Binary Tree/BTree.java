@@ -87,7 +87,7 @@ public class BTree {
                 }
             }
         }
-
+        //height
         public int height (Node root){
             if(root == null){
                 return 0;
@@ -97,7 +97,7 @@ public class BTree {
             int height = Math.max(lh,rh) + 1;
             return height;
         }
-
+        //countnode
         public int countNode(Node root){
             if(root == null){
                 return 0;
@@ -108,7 +108,7 @@ public class BTree {
             int count = lc + rc + 1;
             return count;
         }
-
+        //sum
         public int sum(Node root){
             if(root == null){
                 return 0;
@@ -118,8 +118,40 @@ public class BTree {
             int rs = sum(root.right);
             return ls + rs+ root.data;
         }
-    }
+        //diameter 1 --> O(N^2)
+        public int diameter(Node root){
+            if(root == null){
+                return 0;
+            }
+            int leftDiam = diameter(root.left);
+            int rightDiam = diameter(root.right);
+            int lh = height(root.left);
+            int rh = height(root.right);
+            int selfDiam = (lh+rh+1);
+            return Math.max(selfDiam, Math.max(leftDiam, rightDiam));
+        }
 
+        //diameter 2 --> O(N)
+        static class Info{
+            int diam;
+            int ht;
+
+            public Info(int diam, int ht){
+                this.diam = diam;
+                this.ht = ht;
+            }
+        }
+        public Info diameter2(Node root){
+            if(root == null){
+                return new Info(0, 0);
+            }
+            Info leftInfo = diameter2(root.left);
+            Info rightInfo = diameter2(root.right);
+            int diam = Math.max(Math.max(leftInfo.diam, rightInfo.diam), leftInfo.ht + rightInfo.ht + 1);
+            int ht = Math.max(leftInfo.ht, rightInfo.ht) + 1;
+            return new Info(diam, ht);
+        }
+    }
      
 
     public static void main(String args[]){
@@ -127,15 +159,26 @@ public class BTree {
         BinaryTree tree = new BinaryTree();
         Node root = tree.buildTree(nodes);
         //System.out.println(root.data);
+        System.out.println("Preorder: ");
         tree.preOrder(root);
         System.out.println();
+        System.out.println("Inorder: ");
         tree.inOrder(root);
         System.out.println();
+        System.out.println("Postorder: ");
         tree.postOrder(root);
         System.out.println();
+        System.out.println("Levelorder: ");
         tree.levelOrder(root);
+        System.out.println("Height: ");
         System.out.println(tree.height(root));
+        System.out.println("Node Count: ");
         System.out.println(tree.countNode(root));
+        System.out.println("Sum of Nodes: ");
         System.out.println(tree.sum(root));
+        System.out.println("Diameter1 of Tree(O(N^2)): ");
+        System.out.println(tree.diameter(root));
+        System.out.println("Diameter2 of Tree(O(N)): ");
+        System.out.println(tree.diameter2(root).diam);
     }
 }
